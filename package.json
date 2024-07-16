@@ -1,0 +1,20 @@
+{
+  "name": "com.ewigedreamer.editortoolbar",
+  "version": "1.0.0",
+  "displayName": "ED Unity Editor Toolbar",
+  "description": "Editor extensions for managing scenes",
+  "unity": "2021.3",
+  "documentationUrl": "",
+  "changelogUrl": "",
+  "licensesUrl": "",
+  "keywords": [
+    "user",
+    "interface",
+    "ui"
+  ],
+  "author": {
+    "name": "Pavel Sborshchikov",
+    "email": "ewigedreamer@gmail.com",
+    "url": "https://github.com/EwigeDreamer"
+  }
+}
