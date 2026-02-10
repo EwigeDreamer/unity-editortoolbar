@@ -2,31 +2,35 @@
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using UnityEditor.Toolbars;
 
 namespace ED.Editor
 {
     [InitializeOnLoad]
     public static class PlaySceneDropdown
     {
-        static PlaySceneDropdown() {
-            EditorToolbarEx.AddRight(0, OnToolbarGUI);
-            EditorApplication.playModeStateChanged += CheckStateChange;
-        }
+        // static PlaySceneDropdown() {
+        //     EditorToolbarEx.AddRight(0, OnToolbarGUI);
+        //     EditorApplication.playModeStateChanged += CheckStateChange;
+        // }
 
-        private const string name = "Play Scene";
-        private const string tooltip = "Load and Play selected scene";
-        private const string icon_path = "d_PlayButton";
-        const string file_name = ".scene_setup_buckup.json";
+        private const string Name = "Play Scene";
+        private const string Path = "Custom/" + Name;
+        private const string Tooltip = "Load and Play selected scene";
+        private const string IconPath = "d_PlayButton";
+        private const string FileName = ".scene_setup_buckup.json";
 
-        private static Texture Icon => EditorGUIUtility.Load(icon_path) as Texture;
-
-        private static readonly GUIContent button_label = new(name, Icon, tooltip);
-
-        static void OnToolbarGUI() {
-            EditorGUI.BeginDisabledGroup(EditorApplication.isPlaying);
-            if (GUILayout.Button(button_label)) DrawPopup();
-            EditorGUI.EndDisabledGroup();
+        private static Texture2D Icon => EditorGUIUtility.Load(IconPath) as Texture2D;
+        
+        private static MainToolbarButton Button = new MainToolbarButton(new MainToolbarContent(Name, Icon, Tooltip), DrawPopup);
+        
+        [MainToolbarElement(Path, menuPriority = 101, defaultDockPosition = MainToolbarDockPosition.Left)]
+        private static IEnumerable<MainToolbarElement> CreateMainToolbarButton()
+        {
+            Button.enabled = !EditorApplication.isPlaying;
+            yield return Button;
         }
 
         private static void DrawPopup() {
@@ -85,6 +89,6 @@ namespace ED.Editor
             return path.Substring(0, path.Length - "/Assets".Length);
         }
 
-        static string GetFilePath() => Path.Combine(GetProjectPath(), file_name);
+        static string GetFilePath() => System.IO.Path.Combine(GetProjectPath(), FileName);
     }
 }
